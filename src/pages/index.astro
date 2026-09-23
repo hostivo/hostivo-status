@@ -1,0 +1,155 @@
+---
+import "../styles/global.css";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const endpoint = "https://check.kundeninstanz.de/status.json";
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Systemstatus – HOSTIVO</title>
+    <meta
+      name="description"
+      content="Der aktuelle Status der HOSTIVO-Dienste. Informationen zu Störungen, Wartungen und der Verfügbarkeit unserer Systeme."
+    />
+    <meta name="theme-color" content="#0b2d5b" />
+    <link
+      rel="canonical"
+      href={new URL(import.meta.env.BASE_URL, Astro.site)}
+    />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link
+      rel="preload"
+      href={`${base}/fonts/inter-latin.woff2`}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style
+      is:inline
+      set:html={`@font-face{font-family:Inter;font-style:normal;font-weight:100 900;font-display:swap;src:url("${base}/fonts/inter-latin.woff2") format("woff2")}`}
+    ></style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Zum Inhalt springen
+    </a>
+    <header>
+      <div class="container header-inner">
+        <a href="https://hostivo.de" aria-label="HOSTIVO – Startseite">
+          <img src={`${base}/logo.svg`} width="183" height="38" alt="HOSTIVO" />
+        </a>
+        <a class="back-link" href="https://hostivo.de">
+          Zur Website <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </header>
+    <main id="main" class="container" data-endpoint={endpoint}>
+      <section class="intro">
+        <span class="eyebrow">HOSTIVO SYSTEMSTATUS</span>
+        <h1>Alles im Blick.</h1>
+        <p>
+          Hier findest du den aktuellen Zustand unserer Dienste
+          <br class="desktop-break" /> und alle Informationen zu Störungen und
+          Wartungen.
+        </p>
+      </section>
+      <section
+        class="overview"
+        data-state="unknown"
+        aria-labelledby="overall-title"
+      >
+        <div class="overview-icon" aria-hidden="true">
+          ●
+        </div>
+        <div class="overview-copy">
+          <span class="eyebrow">AKTUELLER GESAMTSTATUS</span>
+          <h2 id="overall-title">Status wird geladen …</h2>
+          <p id="overall-message">
+            Die aktuellen Informationen werden abgerufen.
+          </p>
+        </div>
+        <div class="refresh-line">
+          <span id="updated">Noch keine Statusdaten empfangen</span>
+          <div class="refresh-actions">
+            <span id="countdown" role="timer" aria-live="off">
+              Status wird geladen …
+            </span>
+            <button id="refresh" type="button">
+              Manuell aktualisieren <span aria-hidden="true">↻</span>
+            </button>
+          </div>
+        </div>
+      </section>
+      <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
+      <noscript>
+        <p class="notice">
+          Bitte aktiviere JavaScript, um aktuelle Statusdaten zu laden.{" "}
+          <a href={endpoint}>Statusdaten direkt öffnen</a>
+        </p>
+      </noscript>
+      <section class="section" aria-labelledby="services-title">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">AUTOMATISCHE ÜBERWACHUNG</span>
+            <h2 id="services-title">Unsere Dienste</h2>
+          </div>
+          <span class="subtle" id="interval">
+            Automatische Aktualisierung
+          </span>
+        </div>
+        <p id="services-notice" class="data-notice" hidden></p>
+        <div id="services" class="services">
+          <p class="empty">Die Dienstestatus werden geladen.</p>
+        </div>
+      </section>
+      <section class="section" aria-labelledby="messages-title">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">INFORMATIONEN VON UNSEREM TEAM</span>
+            <h2 id="messages-title">Aktuelle Meldungen</h2>
+          </div>
+        </div>
+        <p id="messages-notice" class="data-notice" hidden></p>
+        <div id="messages">
+          <p class="empty">Meldungen werden geladen.</p>
+        </div>
+      </section>
+      <section class="section archive-section" aria-labelledby="archive-title">
+        <details id="archive-details">
+          <summary>
+            <h2 id="archive-title">Vergangene Meldungen</h2>
+            <span aria-hidden="true">+</span>
+          </summary>
+          <p id="archive-notice" class="data-notice" hidden></p>
+          <div id="archive">
+            <p class="empty">Das Archiv wird geladen.</p>
+          </div>
+        </details>
+      </section>
+      <aside class="help">
+        <div>
+          <h2>Du brauchst Unterstützung?</h2>
+          <p>Unser Team hilft dir gerne weiter.</p>
+        </div>
+        <a class="button" href="https://hostivo.de/support">
+          Zum Support <span aria-hidden="true">↗</span>
+        </a>
+      </aside>
+    </main>
+    <footer>
+      <div class="container footer-inner">
+        <span>© {new Date().getFullYear()} HOSTIVO</span>
+        <nav aria-label="Rechtliches">
+          <a href="https://hostivo.de/impressum">Impressum</a>
+          <a href="https://hostivo.de/datenschutz">Datenschutz</a>
+        </nav>
+      </div>
+    </footer>
+    <script>
+      import "../lib/client";
+    </script>
+  </body>
+</html>
