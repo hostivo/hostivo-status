@@ -1,0 +1,2 @@
+# hostivo-status
+HOSTIVO Status
